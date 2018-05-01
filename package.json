@@ -1,0 +1,19 @@
+{
+  "name": "botbase",
+  "version": "1.0.0",
+  "description": "A flexible ORM for Botington.",
+  "main": "botbase.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://bitbucket.org/botingtongroup/botbase.git"
+  },
+  "author": "Richard Key",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/botingtongroup/botbase#readme",
+  "dependencies": {
+    "mongodb": "^3.0.7"
+  }
+}
