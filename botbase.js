@@ -1,19 +1,7 @@
-const path = require('path'),
-      MongoDB = require('./lib/connectors/mongodb/connector.mongo'),
-      db = MongoDB(),
+const connectors = require('./lib/connectors'),
+      db = connectors.MongoDB(),
       members = db.model('members');
 
-;
-
-members.updateOrCreateMany([
-  {
-    filter: {username:'dude'},
-    update: {$set:{isCool:true}}
-  },
-  {
-    filter: {username:'dudethree'},
-    update: {$set:{isCool:false,isAwsome:true}}
-  }
-], (error) => {
+members.nuke({username:'dudethree'}, (error) => {
   console.log(error);
 });
