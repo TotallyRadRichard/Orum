@@ -1,6 +1,6 @@
 {
   "name": "botbase",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A flexible ORM for Botington.",
   "main": "botbase.js",
   "scripts": {
