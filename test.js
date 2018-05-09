@@ -12,8 +12,10 @@ const members = db.model('members', {
   lastping: bb.type.INT
 });
 
-members.create({
-  username: 'Member ' + (Math.round(Math.random() * 999999) + 100000),
+let username = "Member 171051";
+//username = 'Member ' + (Math.round(Math.random() * 999999) + 100000);
+
+members.readOrCreate({username:username}, {
   age: 0,
   lastping: Date.now()
 }, (error, member) => {
