@@ -15,9 +15,9 @@ const members = db.model('members', {
 let username = "Member 171051";
 //username = 'Member ' + (Math.round(Math.random() * 999999) + 100000);
 
-members.readOrCreate({username:username}, {
+members.updateOrCreate({username:username}, {$set: {
   age: 0,
   lastping: Date.now()
-}, (error, member) => {
-  console.log(error || member);
+}}, (error, created) => {
+  console.log(error || created);
 });
