@@ -1,5 +1,5 @@
 const bb = require('./botbase');
-// bb.connector('mongodb');
+//bb.connector('loki');
 
 // const db = bb.connect({connector:'mongodb'}, function(error) {
 //   if(error) {

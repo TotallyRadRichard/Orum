@@ -1,11 +1,14 @@
 const BotBase = {};
 
 BotBase.type = require('./lib/datatypes');
+BotBase.Connector = require('./lib/connector');
+BotBase.Model = require('./lib/model');
 
 // Collection of database connectors to use
 // pre-filled with built in connectors
 BotBase.connectors = {
-  'mongodb': './lib/connectors/mongodb/connector.mongo'
+  // 'mongodb': './lib/connectors/mongodb/connector.mongo',
+  'loki': './lib/connectors/loki/connector.loki'
 };
 
 BotBase.connect = function(configuration, onConnect) {
@@ -20,7 +23,7 @@ BotBase.connect = function(configuration, onConnect) {
   }
 };
 
-BotBase.connector = function(name, path) {
+BotBase.register = function(name, path) {
   if(BotBase.connectors[name] && typeof BotBase.connectors[name] === 'string') {
     BotBase.connectors[name] = require(BotBase.connectors[name]);
   } else if(BotBase.connectors[name]) {
