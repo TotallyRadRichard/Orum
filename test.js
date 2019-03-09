@@ -1,11 +1,11 @@
 const bb = require('./botbase');
-//bb.connector('loki');
+bb.register('loki');
 
-// const db = bb.connect({connector:'mongodb'}, function(error) {
-//   if(error) {
-//     throw error;
-//   }
-// });
+const db = bb.connect({connector:'loki'});
+
+db.connect().then((error) => {
+  console.log('Connected?');
+});
 
 // const members = db.model('members', {
 //   username:  bb.type.TEXT,

@@ -11,16 +11,20 @@ BotBase.connectors = {
   'loki': './lib/connectors/loki/connector.loki'
 };
 
-BotBase.connect = function(configuration, onConnect) {
+BotBase.connect = function(configuration) {
+  let db = new BotBase.Connector();
+
   if(!configuration || !configuration.connector) {
-    return onConnect(new Error('You must specify a connector type in [configuration.connector].'));
+    db.error = 'You must specify a connector type in [configuration.connector].';
   }
 
   if(BotBase.connectors[configuration.connector]) {
-    BotBase.connectors[configuration.connector](configuration, onConnect);
+    db = BotBase.connectors[configuration.connector](configuration);
   } else {
-    onConnect(new Error(`No connector found for ${configuration.connector}`));
+    db.error = `No connector found for ${configuration.connector}`;
   }
+
+  return db;
 };
 
 BotBase.register = function(name, path) {
