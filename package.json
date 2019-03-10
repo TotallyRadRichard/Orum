@@ -1,19 +1,21 @@
 {
-  "name": "botbase",
-  "version": "1.1.2",
-  "description": "A flexible ORM for Botington.",
-  "main": "botbase.js",
+  "name": "Orum",
+  "version": "1.0.0",
+  "description": "A simple ORM for Node.",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jasmine"
   },
   "repository": {
     "type": "git",
     "url": "git+https://bitbucket.org/botingtongroup/botbase.git"
   },
-  "author": "Richard Key",
+  "author": "Busyrich",
   "license": "ISC",
   "homepage": "https://bitbucket.org/botingtongroup/botbase#readme",
-  "dependencies": {
-    
+  "dependencies": {},
+  "devDependencies": {
+    "jasmine": "^3.3.1",
+    "lokijs": "^1.5.6"
   }
 }
