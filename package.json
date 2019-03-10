@@ -1,21 +1,31 @@
 {
-  "name": "Orum",
-  "version": "1.0.0",
+  "name": "orum",
+  "version": "0.0.0",
   "description": "A simple ORM for Node.",
   "main": "index.js",
   "scripts": {
     "test": "jasmine"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://bitbucket.org/botingtongroup/botbase.git"
-  },
   "author": "Busyrich",
-  "license": "ISC",
-  "homepage": "https://bitbucket.org/botingtongroup/botbase#readme",
+  "license": "MIT",
   "dependencies": {},
   "devDependencies": {
     "jasmine": "^3.3.1",
     "lokijs": "^1.5.6"
-  }
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TotallyRadRichard/Orum.git"
+  },
+  "keywords": [
+    "orm",
+    "database"
+  ],
+  "bugs": {
+    "url": "https://github.com/TotallyRadRichard/Orum/issues"
+  },
+  "homepage": "https://github.com/TotallyRadRichard/Orum#readme"
 }
