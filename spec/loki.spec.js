@@ -9,6 +9,7 @@ describe('Loki Interface', () => {
         });
 
   describe('Database Connection', () => {
+
     it('should start disconnected', () => {
       expect(db.connected).toBe(false);
     });
@@ -18,7 +19,19 @@ describe('Loki Interface', () => {
       expect(model.collection).toBeNull();
     });
   
-    it('should resolve when connected', () => {
+    it('should resolve queues when connected', () => {
+      let queuedRecord = {
+        name: 'Test One',
+        value: 12,
+        selected: false
+      };
+
+      opModel.create(queuedRecord).then(record => {
+        expect(record).toEqual(queuedRecord);
+      });
+
+      expect(opModel.queue.queue.length).toBe(1);
+
       return db.connect().then(() => {
         expect(db.connected).toBe(true);
       });
@@ -59,28 +72,83 @@ describe('Loki Interface', () => {
     });
   });
 
-  describe('Post Connection Model Operations', () => {
-    let recordToSave = {
-      name: 'Test One',
+  describe('Model Operations', () => {
+    let recordToCreate = {
+      name: 'Test Two',
+      value: 12,
+      selected: false
+    };
+
+    let recordToResert = {
+      name: 'Test Three',
       value: 12,
       selected: false
     };
 
     it('should be able to create records', () => {
-      return opModel.create(recordToSave).then(record => {
-        expect(record).toEqual(recordToSave);
-      });
-    });
-
-    it('should be able to read multiple records', () => {
-      return opModel.read({name:recordToSave.name}).then(records => {
-        expect(records[0]).toEqual(recordToSave);
+      return opModel.create(recordToCreate).then(record => {
+        expect(record).toEqual(recordToCreate);
       });
     });
 
     it('should be able to read single records', () => {
-      return opModel.readSingle({name:recordToSave.name}).then(record => {
-        expect(record).toEqual(recordToSave);
+      return opModel.readSingle({name:recordToCreate.name}).then(record => {
+        expect(record).toEqual(recordToCreate);
+      });
+    });
+
+    it('should be able to read a record, if exists, or create it if not', () => {
+      opModel.readOrCreate({name:recordToCreate.name}).then(record => {
+        expect(record).toEqual(recordToCreate);
+      });
+
+      return opModel.readOrCreate({
+        name:recordToResert.name
+      }, recordToResert).then(record => {
+        expect(record).toEqual(recordToResert);
+      });
+    });
+
+    it('should be able to read multiple records', () => {
+      return opModel.read({selected:false}).then(records => {
+        expect(records.length).toBe(3);
+        expect(records[1]).toEqual(recordToCreate);
+        expect(records[2]).toEqual(recordToResert);
+      });
+    });
+
+    it('should be able to update a record', () => {
+      return opModel.update({name:recordToCreate.name}, {value:14}).then(record => {
+        expect(record.value).toBe(14);
+      });
+    });
+
+    it('should be able to update a record, if exists, or create it if not', () => {
+      opModel.updateOrCreate({name:recordToResert.name},{value:15}).then(record => {
+        expect(record.value).toEqual(15);
+      });
+
+      return opModel.updateOrCreate({name:'Test Four'},{value:16}).then(record => {
+        expect(record).toEqual(jasmine.objectContaining({
+          name: 'Test Four',
+          value: 16
+        }));
+      });
+    });
+
+    it('should be able to delete a single record', () => {
+      expect(opModel.collection.count()).toBe(4);
+
+      return opModel.delete({name:'Test One'}).then(() => {
+        expect(opModel.collection.count()).toBe(3);
+      });
+    });
+
+    it('should clear a collection when deleting without a filter', () => {
+      expect(opModel.collection.count()).toBe(3);
+
+      return opModel.delete().then(() => {
+        expect(opModel.collection.count()).toBe(0);
       });
     });
   });
