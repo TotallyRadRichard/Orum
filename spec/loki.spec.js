@@ -136,6 +136,12 @@ describe('Loki Interface', () => {
       });
     });
 
+    it('should be able to increment a field using $inc', () => {
+      return opModel.update({name:recordToCreate.name}, {$inc:{value:4}}).then(record => {
+        expect(record.value).toBe(18);
+      });
+    });
+
     it('should be able to delete a single record', () => {
       expect(opModel.collection.count()).toBe(4);
 
