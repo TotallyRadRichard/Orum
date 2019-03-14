@@ -118,17 +118,17 @@ describe('Loki Interface', () => {
     });
 
     it('should be able to update a record', () => {
-      return opModel.update({name:recordToCreate.name}, {value:14}).then(record => {
+      return opModel.update({name:recordToCreate.name}, {$set:{value:14}}).then(record => {
         expect(record.value).toBe(14);
       });
     });
 
     it('should be able to update a record, if exists, or create it if not', () => {
-      opModel.updateOrCreate({name:recordToResert.name},{value:15}).then(record => {
+      opModel.updateOrCreate({name:recordToResert.name},{$set:{value:15}}).then(record => {
         expect(record.value).toEqual(15);
       });
 
-      return opModel.updateOrCreate({name:'Test Four'},{value:16}).then(record => {
+      return opModel.updateOrCreate({name:'Test Four'},{$setOnInsert:{value:16}}).then(record => {
         expect(record).toEqual(jasmine.objectContaining({
           name: 'Test Four',
           value: 16
