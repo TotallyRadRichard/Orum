@@ -136,6 +136,19 @@ describe('Loki Interface', () => {
       });
     });
 
+    it('should be able to update multiple records, creating ones that dont exist', () => {
+      return opModel.updateOrCreateMany(
+        'name',
+        ['Test Four', 'Test Five'],
+        {$set:{value:22}, $setOnInsert:{value:8}}).then(records => {
+          expect(records[0].value).toBe(22);
+          expect(records[1]).toEqual(jasmine.objectContaining({
+            name: 'Test Five',
+            value: 8
+          }));
+        });
+    });
+
     it('should be able to increment a field using $inc', () => {
       return opModel.update({name:recordToCreate.name}, {$inc:{value:4}}).then(record => {
         expect(record.value).toBe(18);
@@ -143,15 +156,15 @@ describe('Loki Interface', () => {
     });
 
     it('should be able to delete a single record', () => {
-      expect(opModel.collection.count()).toBe(4);
+      expect(opModel.collection.count()).toBe(5);
 
       return opModel.delete({name:'Test One'}).then(() => {
-        expect(opModel.collection.count()).toBe(3);
+        expect(opModel.collection.count()).toBe(4);
       });
     });
 
     it('should clear a collection when deleting without a filter', () => {
-      expect(opModel.collection.count()).toBe(3);
+      expect(opModel.collection.count()).toBe(4);
 
       return opModel.delete().then(() => {
         expect(opModel.collection.count()).toBe(0);
