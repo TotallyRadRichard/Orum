@@ -1,6 +1,6 @@
 {
   "name": "orum",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A simple ORM for Node.",
   "main": "index.js",
   "scripts": {
