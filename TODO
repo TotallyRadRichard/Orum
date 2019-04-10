@@ -1,0 +1,4 @@
+- Orum
+  - Add JSON types
+  - Add ability to load external models files
+  - Add ability to target child properties in loki updates ({'thing.thing':true})
