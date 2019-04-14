@@ -1,4 +1,5 @@
-const Orum = require('../index');
+const Orum = require('../index'),
+      path = require('path');
 
 describe('Loki Interface', () => {
   const db = Orum.create({interface:'loki'}),
@@ -47,7 +48,7 @@ describe('Loki Interface', () => {
     });
   });
 
-  describe('Model Attributes', () => {
+  describe('Model Basics', () => {
 
     it('should allow defining attributes on creation', () => {
       const model = db.model('createAtt', {
@@ -69,6 +70,13 @@ describe('Loki Interface', () => {
       model.addAttribute('name', Orum.type.TEXT);
 
       expect(model.attributes.name).toEqual(Orum.type.TEXT());
+    });
+
+    it('should be able to load external model files',  () => {
+      const model = db.model(path.join(__dirname, 'model.test.js'));
+
+      expect(model.name).toBe('External Model');
+      expect(model.attributes.obj).toEqual(Orum.type.JSON());
     });
   });
 
@@ -128,11 +136,36 @@ describe('Loki Interface', () => {
         expect(record.value).toEqual(15);
       });
 
-      return opModel.updateOrCreate({name:'Test Four'},{$setOnInsert:{value:16}}).then(record => {
-        expect(record).toEqual(jasmine.objectContaining({
-          name: 'Test Four',
-          value: 16
-        }));
+      return opModel.updateOrCreate({name:'Test Four'}, {$setOnInsert:{value:16}}).then(record => {
+          expect(record).toEqual(jasmine.objectContaining({
+            name: 'Test Four',
+            value: 16
+          }));
+      });
+    });
+
+    it('should be able to set sub-fields using dot notation', () => {
+      const subFieldRecord = {
+        name: 'Test Six',
+        value: {
+          one: 'one',
+          two: 'two',
+          three: {
+            number: 3
+          }
+        }
+      };
+
+      return opModel.create(subFieldRecord).then(record => {
+        return opModel.update({name:subFieldRecord.name}, {$inc:{'value.three.number':1}}).then(record => {
+          expect(record.value).toEqual({
+            one: 'one',
+            two: 'two',
+            three: {
+              number: 4
+            }
+          });
+        });
       });
     });
 
@@ -156,15 +189,15 @@ describe('Loki Interface', () => {
     });
 
     it('should be able to delete a single record', () => {
-      expect(opModel.collection.count()).toBe(5);
+      expect(opModel.collection.count()).toBe(6);
 
       return opModel.delete({name:'Test One'}).then(() => {
-        expect(opModel.collection.count()).toBe(4);
+        expect(opModel.collection.count()).toBe(5);
       });
     });
 
     it('should clear a collection when deleting without a filter', () => {
-      expect(opModel.collection.count()).toBe(4);
+      expect(opModel.collection.count()).toBe(5);
 
       return opModel.delete().then(() => {
         expect(opModel.collection.count()).toBe(0);
