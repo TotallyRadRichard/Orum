@@ -77,6 +77,7 @@ describe('Loki Interface', () => {
 
       expect(model.name).toBe('External Model');
       expect(model.attributes.obj).toEqual(Orum.type.JSON());
+      expect(db.models[model.name]).toBe(model);
     });
   });
 
